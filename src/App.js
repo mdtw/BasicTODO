@@ -15,9 +15,15 @@ class App extends Component {
 }
 
   add = () => { 
-    fetch('/addToDo', { method: POST, body: JSON.stringify(this.inp.value) } ) //you want to send the added element back to the server , it's not like the 'data' that is only accessible in the compDidMount func above.
+    fetch('/addToDo', { method: "POST", body: JSON.stringify(this.inp.value) } ) //you want to send the added element back to the server , it's not like the 'data' that is only accessible in the compDidMount func above.
     //if you wanted to setState after the server has updated and you confirm the fetch is complete then you'd run a .then() command on this line with a response.
     this.setState(st => { return { toDoList: st.toDoList.concat(this.inp.value) } }) //doesn't matter if this is before/after the fetch
+  }
+
+  remove = () => {
+    fetch('/clearToDos')
+    this.setState( { toDoList: [] })
+
   }
 
   render() {
@@ -25,7 +31,8 @@ class App extends Component {
       <div className="App">
       <input ref={r => this.inp = r}></input>
       <button onClick={this.add}> Add new item to list </button>
-        {this.state.toDoList.map(x => (<li> {x} </li>))}
+      <button onClick={this.remove}> Clear everything out </button>
+      {this.state.toDoList.map(x => (<li> {x} </li>))}
       </div>
     );
   }
